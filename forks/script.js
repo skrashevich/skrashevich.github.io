@@ -1,4 +1,5 @@
-const apiEndpoint = 'https://github.com/dermotduffy/frigate-hass-card/network/meta'; // Replace with your API endpoint
+//const apiEndpoint = 'https://github.com/dermotduffy/frigate-hass-card/network/meta'; // Replace with your API endpoint
+const apiEndpoint = './data.js';
 
 fetch(apiEndpoint, {
     headers: {
@@ -9,7 +10,7 @@ fetch(apiEndpoint, {
     .then(response => response.json())
     .then(data => {
         // Create users table
-        const usersTable = document.createElement('table');
+        const usersTable = document.getElementById('users-table')
         const usersTableHeader = document.createElement('thead');
         const usersTableBody = document.createElement('tbody');
 
@@ -35,7 +36,16 @@ fetch(apiEndpoint, {
             const userTableHeads = document.createElement('td');
             userTableName.innerText = user.name;
             userTableRepo.innerText = user.repo;
-            userTableHeads.innerText = user.heads.map(head => `${head.name} (${head.id})`).join(', ');
+            //userTableHeads.innerText = user.heads.map(head => head.name).join("\n"); // Only display the name of each head
+            
+            const headNames = user.heads.map(head => head.name);
+      const headDates = user.heads.map(head => {
+        const dateIndex = data.dates.findIndex(date => date === head.id);
+        return (dateIndex !== -1) ? data.dates[dateIndex] : '';
+      });
+      const headRows = headNames.map((name, index) => `${name} (${headDates[index]})`);
+      userTableHeads.innerText = headRows.join(', ');
+            
             userTableRow.appendChild(userTableName);
             userTableRow.appendChild(userTableRepo);
             userTableRow.appendChild(userTableHeads);
@@ -44,7 +54,6 @@ fetch(apiEndpoint, {
         usersTable.appendChild(usersTableBody);
 
         // Display users table
-        document.body.appendChild(usersTable);
 
         // Create dates table
         const datesTable = document.createElement('table');
