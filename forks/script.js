@@ -1,71 +1,133 @@
 const apiEndpoint = 'https://github.com/dermotduffy/frigate-hass-card/network/meta'; // Replace with your API endpoint
 
 fetch(apiEndpoint, {
-  headers: {
-    'Accept': 'application/json',
-    'Authorization': 'Bearer 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'
-  }
+    headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer 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'
+    }
 })
-  .then(response => response.json())
-  .then(data => {
-    // Display users
-    const usersDiv = document.getElementById('users');
-    data.users.forEach(user => {
-      const userDiv = document.createElement('div');
-      const name = document.createElement('p');
-      name.innerText = `Name: ${user.name}`;
-      const repo = document.createElement('p');
-      repo.innerText = `Repo: ${user.repo}`;
-      const heads = document.createElement('p');
-      heads.innerText = `Heads: ${user.heads.map(head => `${head.name} (${head.id})`).join(', ')}`;
-      userDiv.appendChild(name);
-      userDiv.appendChild(repo);
-      userDiv.appendChild(heads);
-      usersDiv.appendChild(userDiv);
-    });
+    .then(response => response.json())
+    .then(data => {
+        // Create users table
+        const usersTable = document.createElement('table');
+        const usersTableHeader = document.createElement('thead');
+        const usersTableBody = document.createElement('tbody');
 
-    // Display dates
-    const datesDiv = document.getElementById('dates');
-    data.dates.forEach(date => {
-      const dateDiv = document.createElement('div');
-      dateDiv.innerText = date;
-      datesDiv.appendChild(dateDiv);
-    });
+        // Create header row
+        const usersTableHeaderRow = document.createElement('tr');
+        const usersTableHeaderName = document.createElement('th');
+        const usersTableHeaderRepo = document.createElement('th');
+        const usersTableHeaderHeads = document.createElement('th');
+        usersTableHeaderName.innerText = 'Name';
+        usersTableHeaderRepo.innerText = 'Repo';
+        usersTableHeaderHeads.innerText = 'Heads';
+        usersTableHeaderRow.appendChild(usersTableHeaderName);
+        usersTableHeaderRow.appendChild(usersTableHeaderRepo);
+        usersTableHeaderRow.appendChild(usersTableHeaderHeads);
+        usersTableHeader.appendChild(usersTableHeaderRow);
+        usersTable.appendChild(usersTableHeader);
 
-    // Display blocks
-    const blocksDiv = document.getElementById('blocks');
-    data.blocks.forEach(block => {
-      const blockDiv = document.createElement('div');
-      const name = document.createElement('p');
-      name.innerText = `Name: ${block.name}`;
-      const start = document.createElement('p');
-      start.innerText = `Start: ${block.start}`;
-      const count = document.createElement('p');
-      count.innerText = `Count: ${block.count}`;
-      blockDiv.appendChild(name);
-      blockDiv.appendChild(start);
-      blockDiv.appendChild(count);
-      blocksDiv.appendChild(blockDiv);
-    });
+        // Create body rows
+        data.users.forEach(user => {
+            const userTableRow = document.createElement('tr');
+            const userTableName = document.createElement('td');
+            const userTableRepo = document.createElement('td');
+            const userTableHeads = document.createElement('td');
+            userTableName.innerText = user.name;
+            userTableRepo.innerText = user.repo;
+            userTableHeads.innerText = user.heads.map(head => `${head.name} (${head.id})`).join(', ');
+            userTableRow.appendChild(userTableName);
+            userTableRow.appendChild(userTableRepo);
+            userTableRow.appendChild(userTableHeads);
+            usersTableBody.appendChild(userTableRow);
+        });
+        usersTable.appendChild(usersTableBody);
 
-    // Display focus
-    const focusDiv = document.getElementById('focus');
-    focusDiv.innerText = data.focus;
+        // Display users table
+        document.body.appendChild(usersTable);
 
-    // Display nethash
-    const nethashDiv = document.getElementById('nethash');
-    nethashDiv.innerText = data.nethash;
+        // Create dates table
+        const datesTable = document.createElement('table');
+        const datesTableBody = document.createElement('tbody');
 
-    // Display spacemap
-    const spacemapDiv = document.getElementById('spacemap');
-    data.spacemap.forEach(row => {
-      const rowDiv = document.createElement('div');
-      row.forEach(value => {
-        const valueDiv = document.createElement('div');
-        valueDiv.innerText = value;
-        rowDiv.appendChild(valueDiv);
-      });
-      spacemapDiv.appendChild(rowDiv);
-    });
-  })
-  .catch(error => console.log(error));
+        // Create body rows
+        data.dates.forEach(date => {
+            const dateTableRow = document.createElement('tr');
+            const dateTableCell = document.createElement('td');
+            dateTableCell.innerText = date;
+            dateTableRow.appendChild(dateTableCell);
+            datesTableBody.appendChild(dateTableRow);
+        });
+        datesTable.appendChild(datesTableBody);
+
+        // Display dates table
+        document.body.appendChild(datesTable);
+
+        // Create blocks table
+        const blocksTable = document.createElement('table');
+        const blocksTableHeader = document.createElement('thead');
+        const blocksTableBody = document.createElement('tbody');
+
+        // Create header row
+        const blocksTableHeaderRow = document.createElement('tr');
+        const blocksTableHeaderName = document.createElement('th');
+        const blocksTableHeaderStart = document.createElement('th');
+        const blocksTableHeaderCount = document.createElement('th');
+        blocksTableHeaderName.innerText = 'Name';
+        blocksTableHeaderStart.innerText = 'Start';
+        blocksTableHeaderCount.innerText = 'Count';
+        blocksTableHeaderRow.appendChild(blocksTableHeaderName);
+        blocksTableHeaderRow.appendChild(blocksTableHeaderStart);
+        blocksTableHeaderRow.appendChild(blocksTableHeaderCount);
+        blocksTableHeader.appendChild(blocksTableHeaderRow);
+        blocksTable.appendChild(blocksTableHeader);
+
+        // Create body rows
+        data.blocks.forEach(block => {
+            const blockTableRow = document.createElement('tr');
+            const blockTableName = document.createElement('td');
+            const blockTableStart = document.createElement('td');
+            const blockTableCount = document.createElement('td');
+            blockTableName.innerText = block.name;
+            blockTableStart.innerText = block.start;
+            blockTableCount.innerText = block.count;
+            blockTableRow.appendChild(blockTableName);
+            blockTableRow.appendChild(blockTableStart);
+            blockTableRow.appendChild(blockTableCount);
+            blocksTableBody.appendChild(blockTableRow);
+        });
+        blocksTable.appendChild(blocksTableBody);
+
+        // Display blocks table
+        document.body.appendChild(blocksTable);
+
+        // Display focus
+        const focusDiv = document.createElement('div');
+        focusDiv.innerText = `Focus: ${data.focus}`;
+        document.body.appendChild(focusDiv);
+
+        // Display nethash
+        const nethashDiv = document.createElement('div');
+        nethashDiv.innerText = `Nethash: ${data.nethash}`;
+        document.body.appendChild(nethashDiv);
+
+        // Display spacemap
+        const spacemapTable = document.createElement('table');
+        const spacemapTableBody = document.createElement('tbody');
+
+        // Create body rows
+        data.spacemap.forEach(row => {
+            const rowTableRow = document.createElement('tr');
+            row.forEach(value => {
+                const valueTableCell = document.createElement('td');
+                valueTableCell.innerText = value;
+                rowTableRow.appendChild(valueTableCell);
+            });
+            spacemapTableBody.appendChild(rowTableRow);
+        });
+        spacemapTable.appendChild(spacemapTableBody);
+
+        // Display spacemap table
+        document.body.appendChild(spacemapTable);
+    })
+    .catch(error => console.log(error));

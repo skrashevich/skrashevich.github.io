@@ -1,21 +1,48 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Display JSON Data</title>
+    <title>Display JSON Data as Tables</title>
     <script src='./script.js'></script>
   </head>
   <body>
     <h1>Users</h1>
-    <div id="users"></div>
+    <table id="users-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Repo</th>
+          <th>Heads</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    
     <h1>Dates</h1>
-    <div id="dates"></div>
+    <table id="dates-table">
+      <tbody></tbody>
+    </table>
+    
     <h1>Blocks</h1>
-    <div id="blocks"></div>
+    <table id="blocks-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Start</th>
+          <th>Count</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    
     <h1>Focus</h1>
     <div id="focus"></div>
+    
     <h1>Nethash</h1>
     <div id="nethash"></div>
+    
     <h1>Spacemap</h1>
-    <div id="spacemap"></div>
+    <table id="spacemap-table">
+      <tbody></tbody>
+    </table>
   </body>
 </html>
